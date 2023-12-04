@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: black;
+      }
+      .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .main {
+        width: 25rem;
+
+        background-color: white;
+        border-radius: 5px;
+        padding: 15px;
+      }
+      .row {
+        margin: 15px;
+        margin-left: 0px;
+      }
+      #btn {
+        margin: 3px;
+        width: 100%;
+        padding: 9px;
+        background-color: blue;
+        color: white;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+      }
+      label {
+        margin-left: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="main" id="box">
+        <h2 id="question">This is Dummy Question.</h2>
+        <div class="row">
+          <input type="radio" id="option1" value="a" name="option" />
+          <label for="option1"> Option 1</label>
+        </div>
+        <div class="row">
+          <input type="radio" id="option2" value="b" name="option" />
+          <label for="option2"> Option 2</label>
+        </div>
+        <div class="row">
+          <input type="radio" id="option3" value="c" name="option" />
+          <label for="option3">Option 3</label>
+        </div>
+        <div class="row">
+          <input type="radio" id="option4" value="d" name="option" />
+          <label for="option4"> Option 4</label>
+        </div>
+
+        <button id="btn" onclick="submitquiz()">Submit</button>
+      </div>
+    </div>
+  </body>
+  <script>
+    const dataquestions = [
+      {
+        que: " Which of the following centers tabs/pills?",
+        a: ".nav-justified",
+        b: ".nav nav-pills",
+        c: "nav-stacked",
+        d: ".nav.navbar-nav",
+        correct: "a",
+      },
+      {
+        que: "Which of the following is for title of the modal?",
+        a: ".modal-sm",
+        b: ".modal-title",
+        c: "modal-open",
+        d: " .modal-lg",
+        correct: "b",
+      },
+      {
+        que: " Which defines style for body of the modal?",
+        a: ".modal",
+        b: ".modal-content",
+        c: " .modal-body",
+        d: ".modal-dialog",
+        correct: "c",
+      },
+    ];
+
+    let index = 0;
+    let total = dataquestions.length;
+    let right = 0,
+      wrong = 0;
+    const question = document.getElementById("question");
+    const input = document.querySelectorAll("input");
+
+    const quiz = () => {
+      const data = dataquestions[index];
+      reset();
+
+      if (index === total) {
+        return endquiz();
+      }
+
+      question.innerHTML = `${index + 1}) ${data.que}`;
+      input[0].nextElementSibling.innerHTML = data.a;
+      input[1].nextElementSibling.innerHTML = data.b;
+      input[2].nextElementSibling.innerHTML = data.c;
+      input[3].nextElementSibling.innerHTML = data.d;
+    };
+
+    const submitquiz = () => {
+      const data = dataquestions[index];
+      // console.log(data)
+      const ans = getAnswer();
+      if (ans === data.correct) {
+        right++;
+      } else {
+        wrong++;
+      }
+      index++;
+      quiz();
+      return;
+    };
+
+    const getAnswer = () => {
+      let answer;
+      input.forEach((inputs) => {
+        if (inputs.checked) {
+          answer = inputs.value;
+        }
+      });
+      return answer;
+    };
+
+    const reset = () => {
+      input.forEach((inputs) => {
+        inputs.checked = false;
+      });
+    };
+
+    const endquiz = () => {
+      document.getElementById(
+        "box"
+      ).innerHTML = `<div style='text-align:center'> 
+        <h3>Thanks for Playing the Game</h3>
+      
+      <h2> ${right} / ${total} are correct </h2>
+      </div>`;
+    };
+    quiz();
+  </script>
+</html>
